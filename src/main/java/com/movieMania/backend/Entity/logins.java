@@ -13,8 +13,17 @@ public class logins {
     Long id;
     int loginCount=0;
     boolean loginStatus = true;
+    private String ipAddress="123.123.123.1";
 
     public logins() {
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public Long getId() {

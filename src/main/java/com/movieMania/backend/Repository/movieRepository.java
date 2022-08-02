@@ -1,4 +1,4 @@
-package com.movieMania.backend.Repository.exception;
+package com.movieMania.backend.Repository;
 
 import com.movieMania.backend.Entity.logins;
 import com.movieMania.backend.Entity.movie;
