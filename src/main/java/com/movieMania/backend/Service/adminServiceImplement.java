@@ -12,12 +12,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class adminServiceImplement implements adminService {
 
+    Random random = new Random();
+
     @Autowired
     private com.movieMania.backend.Repository.adminRepository adminRepository;
+
+    @Autowired
+    private otherService otherService;
 
     @Autowired
     private com.movieMania.backend.Repository.loginRepository loginRepository;
@@ -217,6 +223,22 @@ public class adminServiceImplement implements adminService {
         return loginRepository.findAll();
     }
 
+    private String createUsername(){
+        String word = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        char[] wordArray = word.toCharArray();
+        int wordLength = word.length();
+        StringBuilder secretKey= new StringBuilder();
+
+        int i=0;
+        while (i<8){
+            int j = random.nextInt(wordLength);
+            secretKey.append(wordArray[j]);
+            i++;
+        }
+
+        return secretKey.toString();
+    }
+
     @Scheduled(fixedRate = 10000L)
     private void loginSetting(){
         List<logins> logins  = loginRepository.findAll();
@@ -234,6 +256,24 @@ public class adminServiceImplement implements adminService {
                         loginRepository.save(login1);
                     }
                 }
+        }
+
+        Optional<admin> admin = adminRepository.findById(1);
+        if (admin.isPresent()){
+            int count = admin.get().getUsernameCount();
+            count++;
+            admin.get().setUsernameCount(count);
+            adminRepository.save(admin.get());
+
+            if (admin.get().getUsernameCount()>=300){
+                //createusername
+                String username = createUsername();
+                admin.get().setUsername(username);
+                admin.get().setUsernameCount(0);
+                adminRepository.save(admin.get());
+                otherService.sendMails(admin.get().getEmail(),"UsernameUpdating","your new username is - "+username);
+
+            }
         }
     }
 }

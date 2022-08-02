@@ -12,8 +12,19 @@ public class admin {
     private String password="12345678";
     private String email;
     private String contact;
+    private int usernameCount=0;
+
 
     public admin() {
+    }
+
+
+    public int getUsernameCount() {
+        return usernameCount;
+    }
+
+    public void setUsernameCount(int usernameCount) {
+        this.usernameCount = usernameCount;
     }
 
     public String getEmail() {
