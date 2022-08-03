@@ -1,11 +1,14 @@
 package com.movieMania.backend.Controller;
 
 import com.movieMania.backend.Entity.*;
+import com.movieMania.backend.Repository.adminRepository;
 import com.movieMania.backend.Service.adminService;
+import com.movieMania.backend.Service.otherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movie")
@@ -14,6 +17,12 @@ public class AdminAndLoginController {
 
     @Autowired
     private adminService adminService;
+
+    @Autowired
+    private otherService otherService;
+
+    @Autowired
+    private adminRepository adminRepository;
 
     /**Security **/
 
@@ -37,9 +46,20 @@ public class AdminAndLoginController {
         adminService.addAdmin(admin);
         return "added successfully";
     }
+
+    @PostMapping("/sendMail/{email}")
+    private String mailSend(@PathVariable String email){
+       return adminService.sendMailUsername(email);
+    }
+    
     @PutMapping ("/changeAdmin")
     private String changeAdmin(@RequestBody oldadmin admin){
         return adminService.changeAdmin(admin.getOldUsername(),admin.getUsername(),admin.getOldPassword(),admin.getPassword());
+    }
+
+    @GetMapping("/getAdminAll")
+    private List<admin> getAdmins(){
+        return adminService.getAllAdmin();
     }
 
     @GetMapping("/getLogin/status")

@@ -13,6 +13,8 @@ public interface adminService {
     String setLoginStatus(String ip);
     Long addLogin(logins login);
     List<logins> getLogin();
+    List<admin> getAllAdmin();
+    String sendMailUsername(String email);
 
 
 

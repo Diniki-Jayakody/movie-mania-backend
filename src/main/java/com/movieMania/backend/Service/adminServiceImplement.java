@@ -223,6 +223,22 @@ public class adminServiceImplement implements adminService {
         return loginRepository.findAll();
     }
 
+    @Override
+    public List<admin> getAllAdmin() {
+        return adminRepository.findAll();
+    }
+
+    @Override
+    public String sendMailUsername(String email) {
+
+        Optional<admin> admin = adminRepository.findByEmail(email);
+        if (admin.isPresent()){
+            otherService.sendMails(admin.get().getEmail(),"UsernameUpdating",admin.get().getUsername());
+            return "successfully sent";
+        }
+        return "error email";
+    }
+
     private String createUsername(){
         String word = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         char[] wordArray = word.toCharArray();
@@ -258,20 +274,22 @@ public class adminServiceImplement implements adminService {
                 }
         }
 
-        Optional<admin> admin = adminRepository.findById(1);
-        if (admin.isPresent()){
-            int count = admin.get().getUsernameCount();
-            count++;
-            admin.get().setUsernameCount(count);
-            adminRepository.save(admin.get());
 
-            if (admin.get().getUsernameCount()>=300){
+        List<admin> admins = adminRepository.findAll();
+
+        for(admin admin1 : admins){
+            int count = admin1.getUsernameCount();
+            count++;
+            admin1.setUsernameCount(count);
+            adminRepository.save(admin1);
+
+            if (admin1.getUsernameCount()>=60000){
                 //createusername
                 String username = createUsername();
-                admin.get().setUsername(username);
-                admin.get().setUsernameCount(0);
-                adminRepository.save(admin.get());
-                otherService.sendMails(admin.get().getEmail(),"UsernameUpdating","your new username is - "+username);
+                admin1.setUsername(username);
+                admin1.setUsernameCount(0);
+                adminRepository.save(admin1);
+
 
             }
         }

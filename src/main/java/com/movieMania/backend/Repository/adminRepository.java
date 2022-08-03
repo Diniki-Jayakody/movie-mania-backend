@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface adminRepository extends JpaRepository<admin, Integer> {
 
     admin findByUsername(String username);
+    Optional<admin> findByEmail(String email);
     @Transactional
     @Modifying
     @Query("update admin A set A.username=:username where A.username=:oldUsername")

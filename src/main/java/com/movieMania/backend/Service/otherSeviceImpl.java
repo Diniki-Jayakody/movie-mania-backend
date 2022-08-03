@@ -15,7 +15,7 @@ public class otherSeviceImpl implements otherService{
     @Override
     public void sendMails(String toEmail, String subject, String body) {
         SimpleMailMessage massage = new SimpleMailMessage();
-        massage.setFrom("subath.abeysekara@gmail.com");
+        massage.setFrom("moviemania691@gmail.com");
         massage.setTo(toEmail);
         massage.setSubject(subject);
         massage.setText(body);
