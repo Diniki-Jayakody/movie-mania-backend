@@ -47,6 +47,11 @@ public class AdminAndLoginController {
         return "added successfully";
     }
 
+    @GetMapping("/getMails")
+    private List<String> getMail(){
+        return adminService.getAllMails();
+    }
+
     @PostMapping("/sendMail/{email}")
     private String mailSend(@PathVariable String email){
        return adminService.sendMailUsername(email);

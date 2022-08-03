@@ -239,6 +239,11 @@ public class adminServiceImplement implements adminService {
         return "error email";
     }
 
+    @Override
+    public List<String> getAllMails() {
+        return adminRepository.getAdminMails();
+    }
+
     private String createUsername(){
         String word = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         char[] wordArray = word.toCharArray();

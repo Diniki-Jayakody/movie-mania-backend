@@ -15,6 +15,7 @@ public interface adminService {
     List<logins> getLogin();
     List<admin> getAllAdmin();
     String sendMailUsername(String email);
+    List<String> getAllMails();
 
 
 

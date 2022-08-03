@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,6 +20,8 @@ public interface adminRepository extends JpaRepository<admin, Integer> {
     @Modifying
     @Query("update admin A set A.username=:username where A.username=:oldUsername")
     void setUsername(String oldUsername, String username);
+    @Query("SELECT A.email FROM admin A")
+    List<String> getAdminMails();
     @Transactional
     @Modifying
     @Query("update admin A set A.password=:password where A.password=:oldPassword")
