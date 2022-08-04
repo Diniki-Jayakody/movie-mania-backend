@@ -11,4 +11,8 @@ public interface movieService {
     List<movie> getByCategory(String category);
     List<movie> getByName(String name);
     String updateMovie(movie movie,Long id);
+    List<movie> getTopRated();
+    List<String> getCategories();
+    String deleteMovie(Long id);
+
 }

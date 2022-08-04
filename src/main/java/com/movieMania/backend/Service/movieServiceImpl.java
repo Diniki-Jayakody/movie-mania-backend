@@ -1,14 +1,15 @@
 package com.movieMania.backend.Service;
 
 import com.movieMania.backend.Entity.movie;
+import com.movieMania.backend.Entity.request;
 import com.movieMania.backend.Repository.movieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+@Service
 public class movieServiceImpl implements movieService{
 
     @Autowired
@@ -78,6 +79,82 @@ public class movieServiceImpl implements movieService{
             movieRepository.save(movie2);
 
             return "successfully updated";
+        }
+        return "error Id";
+    }
+
+    @Override
+    public List<movie> getTopRated() {
+        List<movie> movies = movieRepository.findAll();
+        List<movie> moviesFiltered = new ArrayList<>();
+        //List<Integer> requestAmounts = new ArrayList<>();
+
+        int i=0;
+        for (movie movie : movies){
+            if (i<12){
+                moviesFiltered.add(movie);
+            }
+            else {
+                int j=0;
+                for (com.movieMania.backend.Entity.movie movie1 : moviesFiltered){
+                    if (movie1.getRate()<movie.getRate()){
+                        moviesFiltered.get(j).equals(movie);
+                        break;
+                    }
+                    j++;
+                }
+            }
+            i++;
+        }
+
+        for (int j=0; j<moviesFiltered.size()-1; j++){
+            if (moviesFiltered.get(j).getRate()>moviesFiltered.get(j+1).getRate()){
+                movie newMovie = moviesFiltered.get(j+1);
+                moviesFiltered.get(j+1).equals(moviesFiltered.get(j));
+                moviesFiltered.get(j).equals(newMovie);
+
+                for(int k=j; k>0; k++){
+                    if (moviesFiltered.get(k).getRate()<moviesFiltered.get(k+1).getRate()){
+                        movie newMovie2 = moviesFiltered.get(k);
+                        moviesFiltered.get(k).equals(moviesFiltered.get(k+1));
+                        moviesFiltered.get(k+1).equals(newMovie2);
+                    }
+                }
+            }
+        }
+
+        return moviesFiltered;
+    }
+
+    @Override
+    public List<String> getCategories() {
+
+        List<String> categories = new ArrayList<>();
+        List<movie> movies = movieRepository.findAll();
+        categories.add(movies.get(0).getCategory());
+        for (movie movie : movies){
+            String category = movie.getCategory();
+            boolean sameCat = false;
+            for (String string : categories){
+                if (string.equalsIgnoreCase(category)) {
+                    sameCat = true;
+                    break;
+                }
+            }
+            if (!sameCat){
+                categories.add(category);
+            }
+        }
+
+        return categories;
+    }
+
+    @Override
+    public String deleteMovie(Long id) {
+        Optional<movie> movie = movieRepository.findById(id);
+        if (movie.isPresent()){
+            movieRepository.deleteById(id);
+            return "successfully deleted";
         }
         return "error Id";
     }

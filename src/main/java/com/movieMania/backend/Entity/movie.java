@@ -21,6 +21,7 @@ public class movie {
     String name;
     String trailerLink;
     String imageUrl;
+    Long rate = 0L;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("movie-request")
@@ -32,6 +33,14 @@ public class movie {
 
     public List<request> getRequests() {
         return requests;
+    }
+
+    public Long getRate() {
+        return rate;
+    }
+
+    public void setRate(Long rate) {
+        this.rate = rate;
     }
 
     public void setRequests(List<request> requests) {
