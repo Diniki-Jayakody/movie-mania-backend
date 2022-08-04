@@ -11,7 +11,7 @@ public class request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long requestId;
-    String adminStatus;
+    String adminStatus="pending";
     String customerName;
     String customerEmail;
     String contact;
