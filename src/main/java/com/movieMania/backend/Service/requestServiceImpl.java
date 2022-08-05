@@ -1,7 +1,10 @@
 package com.movieMania.backend.Service;
 
+import com.intouncommon.backend.Repository.exception.ResourceNotFoundException;
+import com.movieMania.backend.Entity.movie;
 import com.movieMania.backend.Entity.request;
-import com.movieMania.backend.Repository.requestRepository;
+import com.movieMania.backend.Repository.movieRepository;
+import org.hibernate.ResourceClosedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,9 @@ public class requestServiceImpl implements requestService{
 
     @Autowired
     private otherService otherService;
+
+    @Autowired
+    private com.movieMania.backend.Repository.movieRepository movieRepository;
 
     private String generateCode(String contact , Long id){
         String code = "";
@@ -36,7 +42,10 @@ public class requestServiceImpl implements requestService{
     }
 
     @Override
-    public String addRequest(request request) {
+    public String addRequest(request request,Long movie) {
+        movie movie1 = movieRepository.findById(movie).orElseThrow(() ->
+                new ResourceNotFoundException("Location", "Id", movie));
+        request.setMovie(movie1);
         Long id = requestRepository.save(request).getRequestId();
         String code = generateCode(request.getContact(),id);
         Optional<request> request1 = requestRepository.findById(id);

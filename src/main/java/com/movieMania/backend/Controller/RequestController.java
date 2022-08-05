@@ -27,9 +27,9 @@ public class RequestController {
 //    request getByCode(String code);
 //    String sendUploadMail(String code);
 
-    @PostMapping("/addRequest")
-    private String addRequest(@RequestBody request request){
-        return requestService.addRequest(request);
+    @PostMapping("/addRequest/{movieId}")
+    private String addRequest(@RequestBody request request,@PathVariable Long movieId){
+        return requestService.addRequest(request,movieId);
     }
 
     @GetMapping("/getRequests")

@@ -3,17 +3,24 @@ package com.movieMania.backend.Service;
 import com.movieMania.backend.Entity.movie;
 import com.movieMania.backend.Entity.request;
 import com.movieMania.backend.Repository.movieRepository;
+import com.movieMania.backend.Repository.requestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class movieServiceImpl implements movieService{
 
     @Autowired
-    private movieRepository movieRepository;
+    private com.movieMania.backend.Repository.movieRepository movieRepository;
+
+    @Autowired
+    private requestRepository requestRepository;
 
 
     private String dateInCount(){
@@ -59,7 +66,16 @@ public class movieServiceImpl implements movieService{
 
     @Override
     public List<movie> getByName(String name) {
-        return movieRepository.findByNameLike(name);
+        List<movie> movies = movieRepository.findAll();
+        List<movie> movies1 = new ArrayList<>();
+
+        for (movie movie : movies){
+            boolean logic = movie.getName().contains(name);
+            if (logic){
+                movies1.add(movie);
+            }
+        }
+        return movies1;
     }
 
     @Override
@@ -153,6 +169,10 @@ public class movieServiceImpl implements movieService{
     public String deleteMovie(Long id) {
         Optional<movie> movie = movieRepository.findById(id);
         if (movie.isPresent()){
+            List<request> requests = movie.get().getRequests();
+            for (request request : requests){
+                requestRepository.deleteByRequestId(request.getRequestId());
+            }
             movieRepository.deleteById(id);
             return "successfully deleted";
         }

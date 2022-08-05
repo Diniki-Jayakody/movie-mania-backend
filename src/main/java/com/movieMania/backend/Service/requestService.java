@@ -1,13 +1,12 @@
 package com.movieMania.backend.Service;
 
 import com.movieMania.backend.Entity.request;
-import org.graalvm.compiler.core.GraalCompiler;
 
 import java.util.List;
 
 public interface requestService {
 
-    String addRequest(request request);
+    String addRequest(request request,Long movie);
     List<request> getAllRequest();
     String cancelRequest(String code);
     String addScanCopy(String url,String code);
