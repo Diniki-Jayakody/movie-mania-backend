@@ -32,11 +32,20 @@ public class RequestController {
         return requestService.addRequest(request,movieId);
     }
 
-    @GetMapping("/getRequests")
+    @GetMapping("/getPayableRequests")
     private List<request> getAll(){
-        return requestService.getAllRequest();
+        return requestService.getAllPayableRequest();
     }
 
+    @GetMapping("/getNotPayableRequests")
+    private List<request> getNotPayed(){
+        return requestService.getNotPayableRequests();
+    }
+
+    @PutMapping("/setShow/{id}")
+    private String setShow(@PathVariable Long id){
+        return requestService.setShowState(id);
+    }
     @GetMapping("/getPayedRequests")
     private List<request> getPayed(){
         return requestService.getPayedRequests();

@@ -14,4 +14,6 @@ public interface movieService {
     List<movie> getTopRated();
     List<String> getCategories();
     String deleteMovie(Long id);
+    movie getById(Long id);
+
 }

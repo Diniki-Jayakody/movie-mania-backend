@@ -37,12 +37,17 @@ public class MovieController {
 
     @DeleteMapping("/deleteMovie/{id}")
     private String deleteMovie(@PathVariable Long id){
-        return deleteMovie(id);
+        return movieService.deleteMovie(id);
     }
 
     @GetMapping("/getMovies")
     private List<movie> getAllMovies(){
         return movieService.getAllMovies();
+    }
+
+    @GetMapping("/getMovie/{id}")
+    private movie getMovie(@PathVariable Long id){
+        return movieService.getById(id);
     }
 
     @GetMapping("/getMovieByCategory/{category}")

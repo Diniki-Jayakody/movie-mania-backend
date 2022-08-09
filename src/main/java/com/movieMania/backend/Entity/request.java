@@ -18,14 +18,32 @@ public class request {
     String code;
     String driverLink;
     String slipUrl;
+    String payableStatus="notPayable";
+    String adminShow="notShow";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "movie", foreignKey = @ForeignKey(name = "movie-request_fk1"))
     @JsonBackReference(value = "movie-request")
     @ToString.Exclude
-    private movie movie;
+    private com.movieMania.backend.Entity.movie movie;
 
     public request() {
+    }
+
+    public String getPayableStatus() {
+        return payableStatus;
+    }
+
+    public void setPayableStatus(String payableStatus) {
+        this.payableStatus = payableStatus;
+    }
+
+    public String getAdminShow() {
+        return adminShow;
+    }
+
+    public void setAdminShow(String adminShow) {
+        this.adminShow = adminShow;
     }
 
     public com.movieMania.backend.Entity.movie getMovie() {

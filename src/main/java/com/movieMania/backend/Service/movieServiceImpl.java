@@ -56,7 +56,26 @@ public class movieServiceImpl implements movieService{
 
     @Override
     public List<movie> getAllMovies() {
-        return movieRepository.findAll();
+        List<movie> movies =movieRepository.findAll();
+       // List<movie> moviesRecent = new ArrayList<>();
+
+        for (int j=0; j<movies.size()-1; j++){
+
+            if (Long.parseLong(movies.get(j).getAddDate())>Long.parseLong(movies.get(j+1).getAddDate())){
+                movie newMovie = movies.get(j+1);
+                movies.get(j+1).equals(movies.get(j));
+                movies.get(j).equals(newMovie);
+
+                for(int k=j; k>0; k--){
+                    if (Long.parseLong(movies.get(k).getAddDate())>Long.parseLong(movies.get(k+1).getAddDate())){
+                        movie newMovie2 = movies.get(k);
+                        movies.get(k).equals(movies.get(k+1));
+                        movies.get(k+1).equals(newMovie2);
+                    }
+                }
+            }
+        }
+        return movies;
     }
 
     @Override
@@ -129,7 +148,7 @@ public class movieServiceImpl implements movieService{
                 moviesFiltered.get(j+1).equals(moviesFiltered.get(j));
                 moviesFiltered.get(j).equals(newMovie);
 
-                for(int k=j; k>0; k++){
+                for(int k=j; k>0; k--){
                     if (moviesFiltered.get(k).getRate()<moviesFiltered.get(k+1).getRate()){
                         movie newMovie2 = moviesFiltered.get(k);
                         moviesFiltered.get(k).equals(moviesFiltered.get(k+1));
@@ -177,5 +196,11 @@ public class movieServiceImpl implements movieService{
             return "successfully deleted";
         }
         return "error Id";
+    }
+
+    @Override
+    public movie getById(Long id) {
+        Optional<movie> movie =movieRepository.findById(id);
+        return movie.orElse(null);
     }
 }

@@ -59,10 +59,17 @@ public class requestServiceImpl implements requestService{
         }
         return "error";
     }
-
     @Override
-    public List<request> getAllRequest() {
-        return requestRepository.findAll();
+    public List<request> getAllPayableRequest() {
+        List<request> requests = requestRepository.findAll();
+        List<request> requests1 = new ArrayList<>();
+
+        for (request request : requests){
+            if (request.getPayableStatus().equalsIgnoreCase("payable")){
+                requests1.add(request);
+            }
+        }
+        return requests1;
     }
 
     @Override
@@ -95,7 +102,7 @@ public class requestServiceImpl implements requestService{
         List<request> requests = requestRepository.findAll();
         List<request> requests1 = new ArrayList<>();
         for (request request : requests){
-            if (request.getAdminStatus().equalsIgnoreCase("payed")){
+            if (request.getAdminStatus().equalsIgnoreCase("payed")&&request.getPayableStatus().equalsIgnoreCase("payable")){
                 requests1.add(request);
             }
         }
@@ -148,5 +155,29 @@ public class requestServiceImpl implements requestService{
             return "sent";
         }
         return "error code";
+    }
+
+    @Override
+    public List<request> getNotPayableRequests() {
+        List<request> requests = requestRepository.findAll();
+        List<request> requests1 = new ArrayList<>();
+
+        for (request request : requests){
+            if (request.getPayableStatus().equalsIgnoreCase("notPayable")&&request.getAdminShow().equalsIgnoreCase("notShow")){
+                requests1.add(request);
+            }
+        }
+        return requests1;
+    }
+
+    @Override
+    public String setShowState(Long id) {
+        Optional<request> request = requestRepository.findById(id);
+        if (request.isPresent()&&request.get().getAdminShow().equalsIgnoreCase("notShow")){
+            request.get().setAdminShow("show");
+            requestRepository.save(request.get());
+            return "saved";
+        }
+        return "error id";
     }
 }
