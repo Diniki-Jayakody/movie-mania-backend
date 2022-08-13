@@ -3,6 +3,7 @@ package com.movieMania.backend.Service;
 import com.intouncommon.backend.Repository.exception.ResourceNotFoundException;
 import com.movieMania.backend.Entity.movie;
 import com.movieMania.backend.Entity.request;
+import com.movieMania.backend.Entity.requestResponse;
 import com.movieMania.backend.Repository.movieRepository;
 import org.hibernate.ResourceClosedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,19 +55,23 @@ public class requestServiceImpl implements requestService{
             String email = request1.get().getCustomerEmail();
             requestRepository.save(request1.get());
             otherService.sendMails(email,"Your Code For Request",code);
-
+            movie1.setRate(movie1.getRate()+1);
+            movieRepository.save(movie1);
             return code;
         }
         return "error";
     }
     @Override
-    public List<request> getAllPayableRequest() {
+    public List<requestResponse> getAllPayableRequest() {
         List<request> requests = requestRepository.findAll();
-        List<request> requests1 = new ArrayList<>();
+        List<requestResponse> requests1 = new ArrayList<>();
 
         for (request request : requests){
             if (request.getPayableStatus().equalsIgnoreCase("payable")){
-                requests1.add(request);
+               requestResponse requestResponse = new requestResponse();
+               requestResponse.setRequest(request);
+               requestResponse.setMovie(request.getMovie());
+                requests1.add(requestResponse);
             }
         }
         return requests1;
@@ -98,12 +103,15 @@ public class requestServiceImpl implements requestService{
     }
 
     @Override
-    public List<request> getPayedRequests() {
+    public List<requestResponse> getPayedRequests() {
         List<request> requests = requestRepository.findAll();
-        List<request> requests1 = new ArrayList<>();
+        List<requestResponse> requests1 = new ArrayList<>();
         for (request request : requests){
             if (request.getAdminStatus().equalsIgnoreCase("payed")&&request.getPayableStatus().equalsIgnoreCase("payable")){
-                requests1.add(request);
+                requestResponse requestResponse = new requestResponse();
+                requestResponse.setRequest(request);
+                requestResponse.setMovie(request.getMovie());
+                requests1.add(requestResponse);
             }
         }
         return requests1;
@@ -158,13 +166,16 @@ public class requestServiceImpl implements requestService{
     }
 
     @Override
-    public List<request> getNotPayableRequests() {
+    public List<requestResponse> getNotPayableRequests() {
         List<request> requests = requestRepository.findAll();
-        List<request> requests1 = new ArrayList<>();
+        List<requestResponse> requests1 = new ArrayList<>();
 
         for (request request : requests){
             if (request.getPayableStatus().equalsIgnoreCase("notPayable")&&request.getAdminShow().equalsIgnoreCase("notShow")){
-                requests1.add(request);
+                requestResponse requestResponse = new requestResponse();
+                requestResponse.setRequest(request);
+                requestResponse.setMovie(request.getMovie());
+                requests1.add(requestResponse);
             }
         }
         return requests1;

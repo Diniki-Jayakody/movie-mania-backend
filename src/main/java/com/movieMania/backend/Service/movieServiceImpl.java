@@ -110,6 +110,7 @@ public class movieServiceImpl implements movieService{
             movie2.setName(movie.getName());
             movie2.setStory(movie.getStory());
             movie2.setTrailerLink(movie.getTrailerLink());
+            movie2.setPrice(movie.getPrice());
 
             movieRepository.save(movie2);
 

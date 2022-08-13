@@ -3,6 +3,7 @@ package com.movieMania.backend.Controller;
 import com.movieMania.backend.Entity.addUrlDto;
 import com.movieMania.backend.Entity.rejectDto;
 import com.movieMania.backend.Entity.request;
+import com.movieMania.backend.Entity.requestResponse;
 import com.movieMania.backend.Service.requestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,12 +34,12 @@ public class RequestController {
     }
 
     @GetMapping("/getPayableRequests")
-    private List<request> getAll(){
+    private List<requestResponse> getAll(){
         return requestService.getAllPayableRequest();
     }
 
     @GetMapping("/getNotPayableRequests")
-    private List<request> getNotPayed(){
+    private List<requestResponse> getNotPayed(){
         return requestService.getNotPayableRequests();
     }
 
@@ -47,7 +48,7 @@ public class RequestController {
         return requestService.setShowState(id);
     }
     @GetMapping("/getPayedRequests")
-    private List<request> getPayed(){
+    private List<requestResponse> getPayed(){
         return requestService.getPayedRequests();
     }
 

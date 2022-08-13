@@ -22,6 +22,7 @@ public class movie {
     String trailerLink;
     String imageUrl;
     Long rate = 0L;
+    double price=300.0;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("movie-request")
@@ -29,6 +30,14 @@ public class movie {
     private List<request> requests;
 
     public movie() {
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public List<request> getRequests() {
